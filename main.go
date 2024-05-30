@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"sync"
 
@@ -38,6 +39,7 @@ func natsStreamingHandler(connStr string, cashOrders map[string]Order, muCashOrd
 			order := &Order{}
 			err := json.Unmarshal(data, order)
 			if err != nil {
+				fmt.Println(err)
 				continue
 			}
 			muCashOrders.Lock()
