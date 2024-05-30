@@ -36,7 +36,10 @@ func natsStreamingHandler(connStr string, cashOrders map[string]Order, muCashOrd
 	for !nc.IsClosed() {
 		if data, opened := <-dataChan; opened {
 			order := &Order{}
-			json.Unmarshal(data, order)
+			err := json.Unmarshal(data, order)
+			if err != nil {
+				continue
+			}
 			muCashOrders.Lock()
 			cashOrders[order.Order_uid] = *order
 			muCashOrders.Unlock()
