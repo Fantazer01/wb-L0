@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task L0</title>
+    <style>
+        #response {
+            white-space: pre-wrap;
+            margin-top: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Display order</h1>
+    <label>Enter id order to search</label>
+    <br>
+    <input type="text" id="idOrderField" required minlength="4" maxlength="20" size="25" />
+    <br>
+    <input type="submit" id="submit" value="Search" />
+    <br>
+    <div id="response"></div>
+
+    <script>
+        const button = document.getElementById('submit');
+
+        const inputField = document.getElementById('idOrderField');
+
+        const responseContainer = document.getElementById('response');
+
+        button.addEventListener('click', () => {
+
+            const inputValue = inputField.value;
+            
+            fetch(`http://localhost:8080/data?id=${encodeURIComponent(inputValue)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                responseContainer.textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                responseContainer.textContent = 'Error: ' + error;
+            });
+        });
+    </script>
+</body>
+</html>
